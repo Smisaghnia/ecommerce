@@ -1,5 +1,6 @@
 package com.shop.ecommerce.user.entity;
 
+import com.shop.ecommerce.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,10 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Set<String> roles;
+    private Set<Role> roles;
+
+    public User(String email, String encode, String firstname, String lastname) {
+    }
 }
