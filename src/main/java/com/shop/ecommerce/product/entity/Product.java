@@ -1,5 +1,6 @@
 package com.shop.ecommerce.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shop.ecommerce.category.entity.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,7 +26,11 @@ public class Product {
 
     private int stock;
 
+    @Column(name = "image_file")
+    private String imageFile;
+
     @ManyToOne
     @JoinColumn(name = "category_id") // Optional, besser für DB-Lesbarkeit
+    @JsonIgnore
     private Category category;
 }

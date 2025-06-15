@@ -71,7 +71,7 @@ public class AuthController {
      * @return JWT-Token oder Fehlermeldung
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<JwtAuthenticationResponse> login(@Valid @RequestBody LoginRequest request){
         try {
             // 1. Benutzer aus der Datenbank laden
             UserDetails userDetails = userService.loadUserByUsername(request.getEmail());
@@ -83,12 +83,12 @@ public class AuthController {
 
             // 3. Token generieren
             String token = jwtService.generateToken(userDetails);
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(new JwtAuthenticationResponse(token));
 
         } catch (BadCredentialsException e) {
-            return ResponseEntity.badRequest().body("Ungültige Anmeldedaten");
+            return ResponseEntity.internalServerError().body(new JwtAuthenticationResponse("Fehler beim Login"));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Serverfehler beim Login");
+            return ResponseEntity.internalServerError().body(new JwtAuthenticationResponse("Serverfehler beim Login"));
         }
     }
 }

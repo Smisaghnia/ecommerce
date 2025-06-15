@@ -23,11 +23,18 @@ public class ProductMapper {
     }
 
     public static ProductResponseDTO toDTO(Product product) {
-        return new ProductResponseDTO(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getPrice() != null ? product.getPrice().doubleValue() : null
-        );
+        ProductResponseDTO dto = new ProductResponseDTO();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setDescription(product.getDescription());
+        dto.setPrice(product.getPrice() != null ? product.getPrice().doubleValue() : null);
+
+        // 🆕 Kategorie-Name setzen, wenn vorhanden
+        if (product.getCategory() != null) {
+            dto.setCategoryName(product.getCategory().getName());
+        }
+        dto.setImageFile(product.getImageFile());
+
+        return dto;
     }
 }

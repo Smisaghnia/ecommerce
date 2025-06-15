@@ -7,19 +7,18 @@ public class ProductResponseDTO {
     private String name;
     private String description;
     private Double price;
+    private String categoryName;
+
+    private String imageFile;
 
     public ProductResponseDTO() {}
 
-    public ProductResponseDTO(Long id, String name, String description, Double price) {
+    public ProductResponseDTO(Long id, String name, String description, Double price,String imageFile) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-    }
-
-
-
-    public ProductResponseDTO(Long id, String name, BigDecimal price) {
+        this.imageFile = imageFile;
     }
 
     // Getter & Setter
@@ -53,5 +52,18 @@ public class ProductResponseDTO {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+    public String getCategoryName() {
+        return categoryName;
+    }
+    public String getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(String imageFile) {
+        this.imageFile = imageFile;
+    }
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

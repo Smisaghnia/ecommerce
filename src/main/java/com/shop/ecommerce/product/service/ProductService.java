@@ -40,7 +40,12 @@ public class ProductService {
      * @return Liste aller Produkte
      */
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        System.out.println("Produkte geladen: " + products.size());
+        for (Product p : products) {
+            System.out.println(p.getId() + " | " + p.getName() + " | " + p.getCategory());
+        }
+        return products;
     }
 
     /**

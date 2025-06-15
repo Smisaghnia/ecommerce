@@ -3,6 +3,7 @@ package com.shop.ecommerce.product.controller;
 import com.shop.ecommerce.product.dto.ProductRequestDTO;
 import com.shop.ecommerce.product.dto.ProductResponseDTO;
 import com.shop.ecommerce.product.entity.Product;
+import com.shop.ecommerce.product.mapper.ProductMapper;
 import com.shop.ecommerce.product.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,11 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+    public ResponseEntity<ProductResponseDTO> getById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ProductMapper.toDTO(product));
     }
 }
