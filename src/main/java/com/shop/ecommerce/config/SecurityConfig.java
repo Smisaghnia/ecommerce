@@ -27,16 +27,23 @@ public class SecurityConfig {
             AuthenticationProvider authenticationProvider
     ) throws Exception {
         http
+                .cors().and() // 🔥 CORS aktivieren
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        // 🔓 OPTIONS-Anfragen überall erlauben (CORS Preflight!)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // 🔐 Authentifizierungsregeln
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/mitarbeiter/**").hasAnyRole("MITARBEITER", "ADMIN")
                         .requestMatchers("/api/orders/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
+
+                        // 🔓 Alles andere erstmal erlauben (optional!)
                         .anyRequest().permitAll()
                 )
                 .authenticationProvider(authenticationProvider)
@@ -44,6 +51,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {

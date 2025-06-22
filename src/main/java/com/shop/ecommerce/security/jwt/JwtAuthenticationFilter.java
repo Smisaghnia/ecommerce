@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -61,5 +62,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 5. Filterkette fortsetzen
         filterChain.doFilter(request, response);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails userDetails) {
+                System.out.println("Token gültig, User: " + userDetails.getUsername());
+            } else {
+                System.out.println("Principal ist kein UserDetails: " + principal);
+            }
+        }
+
     }
 }
